@@ -387,28 +387,31 @@ ul  { list-style: none; }
 .about-section {
   padding: 112px 48px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 72px;
+  grid-template-columns: auto 1fr;
+  gap: 44px;
   align-items: center;
   background-color: var(--pink-light);
 }
 .about-image-frame {
   position: relative;
-  display: inline-block;
-  max-width: 380px;
+  display: block;
+  width: 220px;
+  flex-shrink: 0;
 }
 .about-image-frame::before {
   content: '';
   position: absolute;
-  top: -14px; left: -14px; right: 14px; bottom: 14px;
+  inset: -10px 10px 10px -10px;
   border: 1px solid var(--pink-border);
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
 }
 .about-img {
   width: 100%;
   height: auto;
   display: block;
+  position: relative;
+  z-index: 1;
   transition: transform var(--transition);
 }
 .about-image-frame:hover .about-img { transform: scale(1.02); }
