@@ -11,12 +11,12 @@ const TABS = [
 
 const ALL_IMAGES = [
   // Wildlife (12)
-  { src: '/assets/images/01_Wildlife/image1.jpeg',  cat: 'wildlife' },
-  { src: '/assets/images/01_Wildlife/image2.jpeg',  cat: 'wildlife' },
-  { src: '/assets/images/01_Wildlife/image3.jpeg',  cat: 'wildlife' },
-  { src: '/assets/images/01_Wildlife/image4.jpeg',  cat: 'wildlife' },
-  { src: '/assets/images/01_Wildlife/image5.jpeg',  cat: 'wildlife' },
-  { src: '/assets/images/01_Wildlife/image6.jpeg',  cat: 'wildlife' },
+  { src: '/assets/images/01_Wildlife/gal1.jpeg',               cat: 'wildlife' },
+  { src: '/assets/images/01_Wildlife/gal2.jpeg',               cat: 'wildlife' },
+  { src: '/assets/images/03_Travel_and_Street/gal3.jpeg',      cat: 'travel'   },
+  { src: '/assets/images/04_Portrait_Fashion_Outdoor/gal4.jpeg', cat: 'portrait' },
+  { src: '/assets/images/03_Travel_and_Street/gal5.png',       cat: 'travel'   },
+  { src: '/assets/images/03_Travel_and_Street/gal6.jpeg',      cat: 'travel'   },
   { src: '/assets/images/01_Wildlife/image7.jpeg',  cat: 'wildlife' },
   { src: '/assets/images/01_Wildlife/image9.jpeg',  cat: 'wildlife' },
   { src: '/assets/images/01_Wildlife/image10.jpeg', cat: 'wildlife' },
@@ -66,7 +66,7 @@ const itemVariants = {
     transition: { duration: 0.25 } },
 }
 
-const MOBILE_LIMIT = 8
+const MOBILE_LIMIT = 6
 
 export default function PortfolioGallery() {
   const [activeTab, setActiveTab] = useState('all')
