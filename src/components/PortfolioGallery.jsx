@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const TABS = [
@@ -66,13 +66,28 @@ const itemVariants = {
     transition: { duration: 0.25 } },
 }
 
+const MOBILE_LIMIT = 8
+
 export default function PortfolioGallery() {
   const [activeTab, setActiveTab] = useState('all')
   const [lightbox, setLightbox] = useState(null)
+  const [mobileExpanded, setMobileExpanded] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768)
 
-  const filtered = activeTab === 'all'
-    ? ALL_IMAGES
-    : ALL_IMAGES.filter((img) => img.cat === activeTab)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768)
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  // Reset expanded state when tab changes
+  useEffect(() => { setMobileExpanded(false) }, [activeTab])
+
+  const filtered = useMemo(() =>
+    activeTab === 'all' ? ALL_IMAGES : ALL_IMAGES.filter((img) => img.cat === activeTab),
+  [activeTab])
+
+  const displayed = isMobile && !mobileExpanded ? filtered.slice(0, MOBILE_LIMIT) : filtered
 
   const prev = useCallback(() =>
     setLightbox((i) => (i - 1 + filtered.length) % filtered.length),
@@ -131,7 +146,7 @@ export default function PortfolioGallery() {
       {/* Masonry grid with AnimatePresence to fix filter transitions */}
       <div className="gallery-grid">
         <AnimatePresence mode="popLayout">
-          {filtered.map((img, i) => (
+          {displayed.map((img, i) => (
             <motion.div
               key={img.src}
               className="gallery-item"
@@ -140,11 +155,11 @@ export default function PortfolioGallery() {
               animate="show"
               exit="exit"
               layout
-              onClick={() => setLightbox(i)}
+              onClick={() => setLightbox(filtered.indexOf(img))}
               role="button"
               tabIndex={0}
               aria-label={`View image ${i + 1}`}
-              onKeyDown={(e) => e.key === 'Enter' && setLightbox(i)}
+              onKeyDown={(e) => e.key === 'Enter' && setLightbox(filtered.indexOf(img))}
               transition={{ delay: i * 0.025 }}
             >
               <img src={img.src} alt="" loading="lazy" />
@@ -153,6 +168,15 @@ export default function PortfolioGallery() {
           ))}
         </AnimatePresence>
       </div>
+
+      {/* Show more button — mobile only */}
+      {isMobile && !mobileExpanded && filtered.length > MOBILE_LIMIT && (
+        <div className="gallery-show-more">
+          <button className="gallery-show-more-btn" onClick={() => setMobileExpanded(true)}>
+            Show all {filtered.length} photos
+          </button>
+        </div>
+      )}
 
       {/* Lightbox */}
       <AnimatePresence>
